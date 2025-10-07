@@ -1,7 +1,7 @@
-FROM openjdk:latest
+
+FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY pom.xml ./
-RUN mvn clean package
-COPY src/ ./src/
+COPY target/cap-java-application.jar app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "target/java-docker-tutorial-1.0-SNAPSHOT.jar"]
+ENV JAVA_OPTS="-Xms256m -Xmx512m"
+ENTRYPOINT ["java", "-jar", "app.jar"]
