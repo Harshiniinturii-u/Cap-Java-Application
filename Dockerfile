@@ -1,6 +1,6 @@
 
-FROM openjdk:17-jdk-slim
+FROM openjdk:latest
 WORKDIR /app
-COPY target/cap-java-application.jar app.jar
+COPY . .
 EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]
