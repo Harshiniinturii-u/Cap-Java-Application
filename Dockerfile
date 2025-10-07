@@ -1,9 +1,11 @@
-FROM maven:3.8.7-openjdk:latest
+FROM maven:latest AS build
 WORKDIR /app
-COPY pom.xml ./
-RUN mvn clean package
-RUN openjdk:17-jdk-slim
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+FROM tomcat:9.0
+COPY --from=build /app/target/maven-web-application.war /usr/local/tomcat/webapps/ROOT.war
+ 
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+ 
+CMD ["catalina.sh", "run"]
